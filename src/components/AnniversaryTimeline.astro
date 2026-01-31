@@ -30,22 +30,30 @@ const milestones = [
 ];
 ---
 
-<div class="relative pl-8">
-  <div class="absolute left-0 top-0 w-[1px] h-full bg-neutral-200"></div>
+<div id="timeline-container" class="relative pl-12">
+  
+  <div class="absolute left-6 top-0 w-[1px] h-full bg-neutral-200"></div>
 
-  <div class="space-y-16">
+  <div id="progress-line" class="absolute left-6 top-0 w-[1px] bg-amber-700 h-0 origin-top transition-none z-10">
+    <div class="absolute -bottom-1 -left-[2.5px] w-[6px] h-[6px] rounded-full bg-amber-700 shadow-[0_2px_4px_rgba(180,83,9,0.4)]"></div>
+  </div>
+
+  <div class="space-y-20 py-4">
     {milestones.map((item) => (
-      <div class="relative group">
-        <div class="absolute -left-[36px] top-1.5 w-4 h-4 rounded-full border border-neutral-300 bg-[#f9f9f9] group-hover:bg-amber-700 group-hover:border-amber-700 transition-colors duration-500"></div>
+      <div class="relative group timeline-item">
+        
+        <div class="timeline-dot absolute -left-[30px] top-1.5 w-3 h-3 rounded-full border border-neutral-300 bg-[#f9f9f9] z-20 transition-all duration-500 ease-out">
+            <div class="absolute inset-0 rounded-full bg-amber-700 opacity-0 scale-0 transition-all duration-500 dot-inner"></div>
+        </div>
         
         <div>
-          <span class="text-xs tracking-[0.3em] font-bold text-amber-800 uppercase block mb-2 opacity-60 group-hover:opacity-100 transition-opacity">
+          <span class="text-xs tracking-[0.3em] font-bold text-amber-800 uppercase block mb-2 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
             {item.year}
           </span>
-          <h4 class="text-xl font-light text-neutral-900 mb-3 tracking-tight">
+          <h4 class="text-xl font-light text-neutral-900 mb-3 tracking-tight group-hover:text-black transition-colors duration-500">
             {item.title}
           </h4>
-          <p class="text-sm text-neutral-500 leading-relaxed max-w-sm">
+          <p class="text-sm text-neutral-500 leading-relaxed max-w-sm group-hover:text-neutral-700 transition-colors duration-500">
             {item.description}
           </p>
         </div>
@@ -54,28 +62,132 @@ const milestones = [
   </div>
 </div>
 
+<script>
+  function initTimeline() {
+    const container = document.getElementById('timeline-container');
+    const progressLine = document.getElementById('progress-line');
+    // Convert NodeList to Array for performance mapping
+    const items = Array.from(document.querySelectorAll('.timeline-item'));
+    const dots = items.map(item => item.querySelector('.timeline-dot'));
+
+    if (!container || !progressLine) return;
+
+    // --- PHYSICS STATE ---
+    let currentScroll = 0;
+    let targetScroll = 0;
+    const ease = 0.08; // Lower = "Heavier" liquid feel (More fluid)
+    
+    // Cache dot positions to avoid "Layout Thrashing" during scroll
+    let dotPositions = [];
+
+    const calculatePositions = () => {
+        const containerTop = container.getBoundingClientRect().top + window.scrollY;
+        
+        dotPositions = items.map(item => {
+            const rect = item.getBoundingClientRect();
+            // Calculate absolute distance from container top + offset for center of dot
+            const relativeTop = (rect.top + window.scrollY) - containerTop;
+            return relativeTop + 6; // +6px to hit center of the dot
+        });
+        
+        // Recalculate scroll target immediately in case of resize
+        updateTarget(); 
+    };
+
+    const updateTarget = () => {
+      const rect = container.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      // Start flow when container is 45% up the screen
+      const startOffset = viewportHeight * 0.45; 
+      
+      const value = startOffset - rect.top;
+      const maxScroll = rect.height;
+
+      // Clamp value
+      targetScroll = Math.max(0, Math.min(value, maxScroll));
+    };
+
+    const animate = () => {
+      // 1. Fluid Lerp Interpolation
+      const diff = targetScroll - currentScroll;
+      
+      // Micro-optimization: Stop loop if movement is negligible
+      if (Math.abs(diff) < 0.1) {
+        currentScroll = targetScroll;
+      } else {
+        currentScroll += diff * ease;
+      }
+
+      // Hardware Accelerated Render
+      progressLine.style.height = `${currentScroll}px`;
+
+      // 2. High-Performance Dot Check
+      // We compare the cached positions against the current fluid line height
+      dotPositions.forEach((pos, index) => {
+        const dot = dots[index];
+        if (!dot) return;
+
+        if (currentScroll >= pos) {
+           if (!dot.classList.contains('active-dot')) {
+               dot.classList.add('active-dot');
+           }
+        } else {
+           if (dot.classList.contains('active-dot')) {
+               dot.classList.remove('active-dot');
+           }
+        }
+      });
+
+      requestAnimationFrame(animate);
+    };
+
+    // --- EVENT LISTENERS ---
+    window.addEventListener('scroll', updateTarget, { passive: true });
+    window.addEventListener('resize', calculatePositions); // Recalculate on resize
+    
+    // Initial Setup
+    calculatePositions();
+    animate();
+  }
+
+  // Init
+  initTimeline();
+  document.addEventListener('astro:page-load', initTimeline);
+</script>
+
 <style>
-  /* Optional: Smooth entry animation for the timeline items */
-  .group {
-    animation: slideIn 0.8s ease-out forwards;
+  /* --- DOT STATES --- */
+  
+  /* 1. Base Active State */
+  :global(.timeline-dot.active-dot) {
+    border-color: #b45309 !important; /* amber-700 */
+    background-color: white !important;
+    transform: scale(1.3); /* Spring Scale Up */
+    box-shadow: 0 0 0 4px rgba(180, 83, 9, 0.15); /* Soft Glow Ring */
+  }
+
+  /* 2. Inner Dot Reveal */
+  :global(.timeline-dot.active-dot .dot-inner) {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* --- ENTRY ANIMATIONS --- */
+  .timeline-item {
     opacity: 0;
+    /* Use translate3d for GPU acceleration */
+    animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   }
 
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translate3d(0, 30px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
   }
 
-  /* Stagger the animation of the items */
-  .group:nth-child(1) { animation-delay: 0.1s; }
-  .group:nth-child(2) { animation-delay: 0.2s; }
-  .group:nth-child(3) { animation-delay: 0.3s; }
-  .group:nth-child(4) { animation-delay: 0.4s; }
-  .group:nth-child(5) { animation-delay: 0.5s; }
+  .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+  .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+  .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+  .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+  .timeline-item:nth-child(5) { animation-delay: 0.5s; }
 </style>

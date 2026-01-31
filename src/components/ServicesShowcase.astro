@@ -37,24 +37,32 @@ const services = [
 ];
 ---
 
-<section id="services" class="py-24 px-6 bg-white">
+<section id="services" class="py-24 px-6 md:px-12 bg-[#f5f5f5]">
   <div class="max-w-7xl mx-auto">
-    <div class="mb-16 flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-200 pb-8">
-      <div>
-        <span class="text-[10px] tracking-[0.3em] uppercase text-neutral-400 font-bold">Our Expertise</span>
-        <h2 class="text-4xl md:text-5xl font-light mt-4 text-neutral-900">
-          Holistic <span class="font-serif italic text-amber-800">Development</span>
+    
+    {/* HEADER */}
+    {/* Left-aligned on mobile to match previous section */}
+    <div class="mb-16 flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-300 pb-8 gap-6">
+      <div class="text-left">
+        <span class="text-xs font-bold tracking-[0.3em] uppercase text-amber-700 block mb-4">
+          Our Expertise
+        </span>
+        <h2 class="text-4xl md:text-5xl font-light text-neutral-900 leading-[0.95]">
+          Holistic <span class="font-serif italic text-neutral-500">Development</span>
         </h2>
       </div>
-      <p class="text-neutral-500 max-w-md mt-6 md:mt-0 text-sm leading-relaxed text-right">
-        A multidisciplinary approach merging architecture, real estate, and strategic land development.
+      
+      {/* Description text - Left on mobile, Right on Desktop */}
+      <p class="text-neutral-500 max-w-md text-sm leading-relaxed text-left md:text-right">
+        Beyond listings, we offer a multidisciplinary approach merging architecture, engineering, and strategic land development.
       </p>
     </div>
 
+    {/* GRID LAYOUT */}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[300px]">
       
       {services.map((service) => (
-        <div class={`relative group overflow-hidden rounded-xl transition-all duration-500 hover:shadow-2xl ${service.span}`}>
+        <div class={`relative group overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl ${service.span}`}>
           
           {/* Background Image (If exists) */}
           {service.image && (
@@ -62,15 +70,15 @@ const services = [
               <img 
                 src={service.image} 
                 alt={service.title} 
-                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+              <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-500"></div>
             </div>
           )}
 
-          {/* Special Styling for 'Accent' (Text Only) Blocks */}
+          {/* Accent Block (No Image) - Deep Obsidian */}
           {!service.image && (
-             <div class="absolute inset-0 bg-neutral-900 group-hover:bg-amber-900 transition-colors duration-500">
+             <div class="absolute inset-0 bg-[#1a1a1a] group-hover:bg-amber-900 transition-colors duration-500">
                 <div class="absolute inset-0 opacity-10" 
                      style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;">
                 </div>
@@ -80,19 +88,19 @@ const services = [
           {/* Content Overlay */}
           <div class="relative h-full flex flex-col justify-end p-8 z-10">
             <div class={`transform transition-transform duration-500 group-hover:-translate-y-2`}>
-              <h3 class={`text-2xl font-light mb-2 ${!service.image ? 'text-white' : 'text-white'}`}>
+              <h3 class="text-2xl font-light mb-2 text-white">
                 {service.title}
               </h3>
               
               <div class="h-[1px] w-12 bg-amber-500 mb-4 transition-all duration-500 group-hover:w-full"></div>
               
-              <p class={`text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 ${!service.image ? 'text-neutral-300' : 'text-neutral-300'}`}>
+              <p class="text-sm leading-relaxed text-neutral-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                 {service.desc}
               </p>
             </div>
 
             {/* Corner Icon */}
-            <div class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-500">
+            <div class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
               <span class="text-white text-xl">↗</span>
             </div>
           </div>

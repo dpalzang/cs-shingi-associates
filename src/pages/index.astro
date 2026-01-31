@@ -3,16 +3,15 @@
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation.jsx'; 
 import HeroSection from '../components/HeroSection.astro';
+import FeaturedProperties from '../components/FeaturedProperties.astro'; // <--- IMPORT THIS
 import AnniversaryShowcase from '../components/AnniversaryShowcase.astro';
 import EthicsPhilosophy from '../components/EthicsPhilosophy.astro';
 import ServicesShowcase from '../components/ServicesShowcase.astro';
 import PanIndiaVision from '../components/PanIndiaVision.astro';
 
-// Page Metadata
 export const title = "CS Shingi & Associates | Architecture & Design";
 export const description = "Celebrating 25 years of ethical architecture, property, and design innovation.";
 
-// Current Year Logic (Server-side)
 const currentYear = new Date().getFullYear();
 ---
 
@@ -23,11 +22,13 @@ const currentYear = new Date().getFullYear();
   <main class="min-h-screen">
     <HeroSection />
 
+    <FeaturedProperties />
+
+    <ServicesShowcase />
+
     <AnniversaryShowcase />
 
     <EthicsPhilosophy />
-
-    <ServicesShowcase />
 
     <PanIndiaVision />
 
