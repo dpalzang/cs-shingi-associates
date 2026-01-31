@@ -1,0 +1,81 @@
+---
+// src/components/AnniversaryTimeline.astro
+
+const milestones = [
+  {
+    year: "2001",
+    title: "The Foundation",
+    description: "Established in Gangtok with a mission to merge traditional Himalayan values with modern engineering.",
+  },
+  {
+    year: "2008",
+    title: "Urban Expansion",
+    description: "Completed the first major commercial hub in Sikkim, setting a new standard for local urban design.",
+  },
+  {
+    year: "2015",
+    title: "Sustainable Shift",
+    description: "Pioneered eco-sensitive property development, integrating land preservation with structural innovation.",
+  },
+  {
+    year: "2021",
+    title: "Pan-India Vision",
+    description: "Began cross-border collaborations, bringing our ethical design philosophy to metropolitan landscapes.",
+  },
+  {
+    year: "2026",
+    title: "Silver Jubilee",
+    description: "Celebrating 25 years of trust. Launching a new era of diverse ventures and digital-first design solutions.",
+  }
+];
+---
+
+<div class="relative pl-8">
+  <div class="absolute left-0 top-0 w-[1px] h-full bg-neutral-200"></div>
+
+  <div class="space-y-16">
+    {milestones.map((item) => (
+      <div class="relative group">
+        <div class="absolute -left-[36px] top-1.5 w-4 h-4 rounded-full border border-neutral-300 bg-[#f9f9f9] group-hover:bg-amber-700 group-hover:border-amber-700 transition-colors duration-500"></div>
+        
+        <div>
+          <span class="text-xs tracking-[0.3em] font-bold text-amber-800 uppercase block mb-2 opacity-60 group-hover:opacity-100 transition-opacity">
+            {item.year}
+          </span>
+          <h4 class="text-xl font-light text-neutral-900 mb-3 tracking-tight">
+            {item.title}
+          </h4>
+          <p class="text-sm text-neutral-500 leading-relaxed max-w-sm">
+            {item.description}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* Optional: Smooth entry animation for the timeline items */
+  .group {
+    animation: slideIn 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Stagger the animation of the items */
+  .group:nth-child(1) { animation-delay: 0.1s; }
+  .group:nth-child(2) { animation-delay: 0.2s; }
+  .group:nth-child(3) { animation-delay: 0.3s; }
+  .group:nth-child(4) { animation-delay: 0.4s; }
+  .group:nth-child(5) { animation-delay: 0.5s; }
+</style>

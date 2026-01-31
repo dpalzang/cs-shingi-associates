@@ -1,0 +1,54 @@
+---
+// src/components/PanIndiaVision.astro
+import IndiaMap from './IndiaMap.jsx';
+---
+
+<section id="pan-india" class="py-32 px-6 bg-white overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      
+      <div class="order-2 lg:order-1">
+        <span class="inline-block py-1 px-3 border border-neutral-200 text-[10px] tracking-[0.3em] font-medium uppercase text-neutral-500 mb-8 rounded-full">
+          Expansion
+        </span>
+        
+        <h2 class="text-5xl md:text-7xl font-light mb-8 leading-none tracking-tighter text-neutral-900">
+          Local Roots. <br/>
+          <span class="font-serif italic text-amber-800">National Reach.</span>
+        </h2>
+        
+        <p class="text-lg md:text-xl text-neutral-600 mb-12 leading-relaxed font-light">
+          After 25 years of perfecting our ethical approach in the Himalayas, we are exporting our philosophy of "Integrity-First Design" to India’s metropolitan hubs.
+        </p>
+        
+        <div class="space-y-8 border-l border-neutral-200 pl-8">
+          <div class="relative">
+            <span class="absolute -left-[37px] top-1 h-4 w-4 rounded-full border-2 border-white bg-neutral-300"></span>
+            <h4 class="text-sm font-bold uppercase tracking-widest mb-1">NCR Region</h4>
+            <p class="text-neutral-500 text-sm">Upcoming Commercial Complex (2026)</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[37px] top-1 h-4 w-4 rounded-full border-2 border-white bg-neutral-300"></span>
+            <h4 class="text-sm font-bold uppercase tracking-widest mb-1">Bengaluru</h4>
+            <p class="text-neutral-500 text-sm">Sustainable Housing Communities</p>
+          </div>
+        </div>
+
+        <div class="mt-16">
+          <a href="#contact" class="group inline-flex items-center gap-4 text-sm font-bold uppercase tracking-widest hover:text-amber-800 transition-colors">
+            Start a Project in Your City
+            <span class="group-hover:translate-x-2 transition-transform duration-300">→</span>
+          </a>
+        </div>
+      </div>
+      
+      <div class="order-1 lg:order-2">
+        <IndiaMap client:visible />
+        <p class="text-center text-[10px] uppercase tracking-widest text-neutral-400 mt-6">
+          Interactive Network Visualization
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>

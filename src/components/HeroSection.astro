@@ -1,0 +1,27 @@
+---
+// src/components/HeroSection.astro
+import HeroText from './HeroText.jsx';
+---
+
+<section class="relative h-screen flex items-center justify-center overflow-hidden bg-[#0a0a0a]">
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 z-10"></div>
+    
+    <img 
+      src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" 
+      alt="CS Shingi Architectural Work"
+      class="w-full h-full object-cover grayscale opacity-60"
+    />
+  </div>
+  
+  <div class="container mx-auto relative z-20">
+    <HeroText client:load />
+  </div>
+</section>
+
+<style>
+  /* You can keep your global animations here or move them to a layout */
+  section {
+    perspective: 1000px;
+  }
+</style>
