@@ -6,17 +6,22 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
 <section id="anniversary" class="py-32 px-6 bg-[#f9f9f9] overflow-hidden">
   <div class="max-w-7xl mx-auto">
     
-    {/* HEADER SECTION - Increased gap and allocated more space */}
-    <div class="grid md:grid-cols-12 gap-16 mb-24 relative">
+    {/* HEADER SECTION */}
+    {/* Using Flexbox instead of Grid here ensures the vertical text 
+        stays strictly "next to" the headline without overlapping */}
+    <div class="flex flex-row items-start gap-6 md:gap-12 mb-24">
       
-      {/* "Since 2001" Indicator - Positioned with more breathing room */}
-      <div class="md:col-span-1 hidden md:flex justify-end pt-4">
-        <span class="text-xs tracking-[0.3em] uppercase text-amber-700 font-semibold rotate-180 [writing-mode:vertical-lr] h-auto whitespace-nowrap">
+      {/* "Since 2001" - VERTICAL LABEL */}
+      {/* writing-mode:vertical-rl reserves real space so it won't overlap */}
+      <div class="pt-2 shrink-0">
+        <span class="block text-[10px] md:text-xs tracking-[0.3em] uppercase text-amber-700 font-semibold 
+          [writing-mode:vertical-rl] rotate-180 whitespace-nowrap">
           Since 2001
         </span>
       </div>
 
-      <div class="md:col-span-10">
+      {/* HEADLINE */}
+      <div>
         <h2 class="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] text-neutral-900 mb-10">
           A Quarter Century <br/>
           <span class="font-serif italic text-neutral-400">of Design Excellence</span>
@@ -27,6 +32,7 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
       </div>
     </div>
 
+    {/* IMAGE & TIMELINE GRID */}
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start mb-32">
       <div class="lg:col-span-7 relative group">
         <div class="aspect-[4/5] bg-neutral-200 overflow-hidden shadow-sm">
@@ -36,6 +42,7 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
             class="w-full h-full object-cover grayscale contrast-125 transition-transform duration-700 group-hover:scale-105"
           />
         </div>
+        {/* Floating "25 Years" Box */}
         <div class="absolute -bottom-12 -right-12 bg-white p-16 hidden lg:block border border-neutral-100 shadow-xl">
           <div class="text-[120px] font-serif leading-none text-neutral-900">25</div>
           <div class="text-xs tracking-[0.5em] uppercase text-amber-800 mt-2 font-bold text-center">Years</div>
@@ -51,6 +58,7 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
       </div>
     </div>
 
+    {/* QUOTE SECTION */}
     <div class="border-t border-neutral-200 pt-20">
       <div class="max-w-3xl mx-auto text-center">
         <blockquote class="text-3xl md:text-4xl font-light text-neutral-800 mb-12 leading-tight tracking-tight">
