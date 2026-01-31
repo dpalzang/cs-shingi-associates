@@ -3,18 +3,20 @@ import { config, fields, collection } from '@keystatic/core';
 
 // FIX: Define the component outside the config object to prevent recursion errors
 const CsShingiLogo = () => (
-  <img 
-    src="/images/logo.jpg" 
-    alt="CS Shingi Logo" 
-    height={24} 
-    className="h-6 w-auto" 
+  <img
+    src="/images/logo.jpg"
+    alt="CS Shingi Logo"
+    height={24}
+    className="h-6 w-auto"
   />
 );
 
 export default config({
-  storage: {
-    kind: 'local',
-  },
+  storage: import.meta.env.DEV ?
+   { kind: 'local' } : {
+      kind: 'github',
+      repo: 'dpalzang/cs-shingi-associates', // Your Repo Name
+    },
 
   ui: {
     brand: {

@@ -1,14 +1,27 @@
 // astro.config.mjs
 import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import keystatic from '@keystatic/astro';
+import react from '@astrojs/react';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  output: 'static', // Keystatic works fine with 'static'
+  output: 'server',
+  site: 'https://cs-shingi-associates.vercel.app',
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   integrations: [
-    tailwind(),
-    react(), // <--- Make sure React is here
-    keystatic()
+    tailwind(), 
+    keystatic(), 
+    react()
   ],
+  vite: {
+    optimizeDeps: {
+      include: ['lodash/debounce', 'lodash/throttle', 'direction'],
+    },
+  },
+  server: {
+    host: true
+  }
 });
