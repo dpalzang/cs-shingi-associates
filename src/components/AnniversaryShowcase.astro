@@ -6,13 +6,17 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
 <section id="anniversary" class="py-32 px-6 bg-[#f9f9f9] overflow-hidden">
   <div class="max-w-7xl mx-auto">
     
-    <div class="grid md:grid-cols-12 gap-8 mb-24">
-      <div class="md:col-span-1">
-        <span class="text-xs tracking-[0.3em] uppercase text-amber-700 font-semibold rotate-90 origin-left block whitespace-nowrap">
+    {/* HEADER SECTION - Increased gap and allocated more space */}
+    <div class="grid md:grid-cols-12 gap-16 mb-24 relative">
+      
+      {/* "Since 2001" Indicator - Positioned with more breathing room */}
+      <div class="md:col-span-1 hidden md:flex justify-end pt-4">
+        <span class="text-xs tracking-[0.3em] uppercase text-amber-700 font-semibold rotate-180 [writing-mode:vertical-lr] h-auto whitespace-nowrap">
           Since 2001
         </span>
       </div>
-      <div class="md:col-span-8">
+
+      <div class="md:col-span-10">
         <h2 class="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] text-neutral-900 mb-10">
           A Quarter Century <br/>
           <span class="font-serif italic text-neutral-400">of Design Excellence</span>
@@ -55,7 +59,7 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
         
         <div class="flex flex-col items-center">
            <div class="h-10 w-[1px] bg-amber-700 mb-6"></div>
-           <p class="text-sm tracking-widest uppercase font-semibold">Chandra Shingi</p>
+           <p class="text-sm tracking-widest uppercase font-semibold">Chhatra Shingi</p>
            <p class="text-[10px] tracking-widest uppercase text-neutral-400 mt-1">Founding Principal</p>
         </div>
       </div>
