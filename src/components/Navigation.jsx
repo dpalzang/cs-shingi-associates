@@ -6,16 +6,66 @@ export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    
+    // 1. STATE: Track if the background behind the header is dark
+    const [isDarkBackground, setIsDarkBackground] = useState(true);
 
     useEffect(() => {
+        // Scroll Listener (for shrinking the logo)
         const handleScroll = () => setIsScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+
+        // 2. INTERSECTION OBSERVER: Detects background brightness
+        // This checks the top 5% of the screen to see what section is currently behind the nav.
+        const observerCallback = (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const style = window.getComputedStyle(entry.target);
+                    const bg = style.backgroundColor;
+
+                    // If background is transparent/0 opacity, ignore it (keep previous state)
+                    if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+                         const rgb = bg.match(/\d+/g);
+                         if (rgb) {
+                             // Formula for brightness (standard perceived brightness)
+                             const brightness = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) / 1000);
+                             // If brightness < 128, it's Dark. Otherwise, it's Light.
+                             setIsDarkBackground(brightness < 128);
+                         }
+                    }
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, {
+             root: null,
+             rootMargin: '-5% 0px -95% 0px', // Inspects the top strip of the viewport
+             threshold: 0
+        });
+
+        // Observe all main sections
+        document.querySelectorAll('section, footer').forEach(s => observer.observe(s));
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            observer.disconnect();
+        };
     }, []);
 
     const menuItems = [
         'Work', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'
     ];
+
+    // 3. COLOR LOGIC
+    // If Menu is OPEN -> Always GOLD (because drawer is black).
+    // If Menu is CLOSED -> Depends on Background (Gold for Dark, Obsidian for Light).
+    const iconColorClass = isMenuOpen 
+        ? 'text-gold-200' 
+        : (isDarkBackground ? 'text-gold-200' : 'text-obsidian');
+
+    const hamburgerLineColor = isMenuOpen 
+        ? 'bg-gold-200' 
+        : (isDarkBackground ? 'bg-gold-200' : 'bg-obsidian');
 
     return (
         <>
@@ -25,10 +75,6 @@ export default function Navigation() {
             />
 
             <header
-                // CHANGED: Removed the conditional bg-obsidian logic.
-                // It now stays bg-transparent forever.
-                // We kept the padding change (py-4 vs py-8) so it still feels responsive, 
-                // but you can remove that too if you want it totally static.
                 className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 md:px-12 flex justify-between items-center bg-transparent ${
                     (isScrolled || isMenuOpen) ? 'py-4' : 'py-8'
                 }`}
@@ -42,8 +88,8 @@ export default function Navigation() {
                     />
                 </a>
 
-                {/* ICONS */}
-                <div className="flex items-center gap-6 z-50 relative text-gold-200">
+                {/* ICONS - Dynamic Class Applied Here */}
+                <div className={`flex items-center gap-6 z-50 relative transition-colors duration-500 ${iconColorClass}`}>
 
                     <button
                         onClick={() => setIsSearchOpen(true)}
@@ -59,16 +105,16 @@ export default function Navigation() {
                         className="group focus:outline-none p-2"
                     >
                         {isMenuOpen ? (
-                            // Close X (Gold)
+                            // Close X (Always Gold when open)
                             <svg width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="text-gold-400">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         ) : (
-                            // Hamburger (Custom Gold Animated)
+                            // Hamburger (Lines change color based on background)
                             <div className="flex flex-col items-end gap-1.5">
-                                <span className={`block h-[1px] bg-gold-200 transition-all duration-300 w-8 group-hover:bg-gold-400`}></span>
-                                <span className={`block h-[1px] bg-gold-200 transition-all duration-300 w-6 group-hover:w-8 group-hover:bg-gold-400`}></span>
-                                <span className={`block h-[1px] bg-gold-200 transition-all duration-300 w-4 group-hover:w-8 group-hover:bg-gold-400`}></span>
+                                <span className={`block h-[1px] ${hamburgerLineColor} transition-all duration-300 w-8 group-hover:bg-gold-400`}></span>
+                                <span className={`block h-[1px] ${hamburgerLineColor} transition-all duration-300 w-6 group-hover:w-8 group-hover:bg-gold-400`}></span>
+                                <span className={`block h-[1px] ${hamburgerLineColor} transition-all duration-300 w-4 group-hover:w-8 group-hover:bg-gold-400`}></span>
                             </div>
                         )}
                     </button>
@@ -86,7 +132,6 @@ export default function Navigation() {
                 className={`fixed top-0 right-0 h-full w-full md:w-[450px] bg-obsidian border-l border-white/10 z-40 transform transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
                     }`}
             >
-                {/* Subtle Gradient Background inside Drawer */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-gold-900/20 to-transparent pointer-events-none"></div>
 
                 <div className="relative flex flex-col h-full pt-32 px-12 pb-12">
@@ -103,8 +148,6 @@ export default function Navigation() {
                                 <span className="group-hover:text-gold-400 transition-colors duration-300">
                                     {item}
                                 </span>
-
-                                {/* THE GOLD UNDERLINE ANIMATION */}
                                 <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-gold-400 origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"></span>
                             </a>
                         ))}
