@@ -86,7 +86,6 @@ export default function HeroText() {
       >
         
         {/* --- THE MONUMENT --- */}
-        {/* Changed inline-flex to flex to ensure proper centering */}
         <div className="relative flex flex-col items-center justify-center mb-12 md:mb-16">
             
             {/* Crown */}
@@ -99,8 +98,6 @@ export default function HeroText() {
 
             {/* THE "25" */}
             <div className="relative z-10 leading-[0.8]">
-                
-                {/* 1. Shadow Layer (Depth) */}
                 <span className="
                     absolute inset-0 
                     font-serif italic font-light 
@@ -111,7 +108,6 @@ export default function HeroText() {
                     25
                 </span>
 
-                {/* 2. MAIN RENDER LAYER (God Tier Gold) */}
                 <span className="
                     god-tier-gold
                     relative block 
@@ -124,10 +120,9 @@ export default function HeroText() {
                 </span>
             </div>
 
-            {/* 3. The Glass Badge - MOVED BELOW THE NUMBER */}
+            {/* The Glass Badge */}
             <div 
                 className="mt-8 z-30 w-max"
-                // Kept subtle parallax effect but removed centering transforms
                 style={{ transform: `translateX(${mousePos.x * -10}px) translateY(${mousePos.y * -5}px)` }}
             >
                 <div className="
@@ -139,7 +134,6 @@ export default function HeroText() {
                     group
                     transition-all duration-300 hover:bg-white/10
                 ">
-                    {/* Subtle swipe on hover */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
                     
                     <div className="flex items-center gap-4">
@@ -163,11 +157,14 @@ export default function HeroText() {
         </div>
       </div>
       
-      {/* --- SCROLL TRIGGER --- */}
+      {/* --- SCROLL TRIGGER (FIXED) --- */}
+      {/* 1. Changed absolute to relative so it respects the text above it */}
+      {/* 2. Added mt-16 md:mt-24 to force a large gap */}
+      {/* 3. Removed left/translate centering as flex-col handles it now */}
       <div 
         onClick={scrollToProperties}
         className={`
-            absolute -bottom-24 left-1/2 transform -translate-x-1/2 
+            relative mt-16 md:mt-24
             transition-all duration-1000 delay-[1000ms] 
             cursor-pointer z-50 group py-4
             ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
