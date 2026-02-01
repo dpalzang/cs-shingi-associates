@@ -1,112 +1,75 @@
-// keystatic.config.tsx
+// keystatic.config.ts
 import { config, fields, collection } from '@keystatic/core';
 
-// FIX: Define the component outside the config object to prevent recursion errors
-const CsShingiLogo = () => (
-  <img
-    src="/images/logo.jpg"
-    alt="CS Shingi Logo"
-    height={24}
-    className="h-6 w-auto"
-  />
-);
-
 export default config({
-  storage: import.meta.env.DEV ?
-   { kind: 'local' } : {
-      kind: 'github',
-      repo: 'dpalzang/cs-shingi-associates', // Your Repo Name
-    },
-
-  ui: {
-    brand: {
-      name: 'CS Shingi Admin',
-      // Reference the external component
-      mark: CsShingiLogo,
-    },
-    navigation: {
-      'Portfolio': ['projects'],
-      'Updates': ['news'],
-    },
-  },
-
+  storage: { kind: 'local' },
   collections: {
     projects: collection({
       label: 'Projects',
       slugField: 'title',
-      path: 'src/content/projects/*',
+      path: 'src/content/projects/*', 
       format: { contentField: 'content' },
       schema: {
-        title: fields.slug({ name: { label: 'Project Name' } }),
+        title: fields.slug({ name: { label: 'Title' } }),
         location: fields.text({ label: 'Location' }),
-        year: fields.text({ label: 'Year Completed' }),
+        
         status: fields.select({
-          label: 'Project Status',
+          label: 'Status',
           options: [
-            { label: 'Completed', value: 'Completed' },
-            { label: 'Under Construction', value: 'Ongoing' },
-            { label: 'Concept / Unbuilt', value: 'Concept' },
+            { label: 'For Sale', value: 'For Sale' },
+            { label: 'Sold Out', value: 'Sold Out' },
+            { label: 'Under Construction', value: 'Under Construction' },
           ],
-          defaultValue: 'Completed',
+          defaultValue: 'For Sale'
         }),
+        
+        year: fields.text({ label: 'Year' }),
+
+        // 1. UPDATED: Cover Image
+        // Uses {slug} to put images in distinct folders
         coverImage: fields.image({
           label: 'Cover Image',
-          directory: 'src/assets/projects',
-          publicPath: '@assets/projects',
-          validation: { isRequired: true },
+          directory: 'public/images/projects/{slug}',
+          publicPath: '/images/projects/{slug}/',
         }),
+
+        price: fields.text({ label: 'Price Range' }),
+        type: fields.text({ label: 'Property Type' }),
+
+        // 2. UPDATED: Gallery
         gallery: fields.array(
           fields.image({
             label: 'Gallery Image',
-            directory: 'src/assets/projects/gallery',
-            publicPath: '@assets/projects/gallery',
+            directory: 'public/images/projects/{slug}',
+            publicPath: '/images/projects/{slug}/',
           }),
-          { label: 'Project Gallery' }
+          {
+            label: 'Photo Gallery',
+            itemLabel: (props) => 'Image', 
+          }
         ),
+
+        details: fields.array(
+          fields.object({
+            label: fields.text({ label: 'Label (e.g., Area)' }),
+            value: fields.text({ label: 'Value (e.g., 2,400 sq ft)' }),
+          }),
+          {
+            label: 'Property Details',
+            itemLabel: (props) => `${props.fields.label.value}: ${props.fields.value.value}`,
+          }
+        ),
+
+        // 3. UPDATED: Content Images
         content: fields.document({
-          label: 'Project Description',
+          label: 'Content',
           formatting: true,
           dividers: true,
           links: true,
           images: {
-            directory: 'src/assets/projects/inline',
-            publicPath: '@assets/projects/inline',
+            directory: 'public/images/projects/{slug}',
+            publicPath: '/images/projects/{slug}/',
           },
-        }),
-      },
-    }),
-
-    news: collection({
-      label: 'News & Insights',
-      slugField: 'title',
-      path: 'src/content/news/*',
-      format: { contentField: 'content' },
-      schema: {
-        title: fields.slug({ name: { label: 'Headline' } }),
-        date: fields.date({ label: 'Publish Date', validation: { isRequired: true } }),
-        category: fields.select({
-          label: 'Category',
-          options: [
-            { label: 'Press Release', value: 'News' },
-            { label: 'Thought Leadership', value: 'Insight' },
-            { label: 'Award', value: 'Award' },
-          ],
-          defaultValue: 'News',
-        }),
-        cardColor: fields.select({
-          label: 'Card Background Color',
-          options: [
-            { label: 'Obsidian (Black)', value: 'bg-obsidian' },
-            { label: 'Gold Gradient', value: 'bg-gold-gradient' },
-            { label: 'Deep Blue (Official)', value: 'bg-[#1a237e]' },
-            { label: 'Magenta (Report)', value: 'bg-[#ad1457]' },
-          ],
-          defaultValue: 'bg-obsidian',
-        }),
-        content: fields.document({
-          label: 'Article Content',
-          formatting: true,
-          links: true,
         }),
       },
     }),

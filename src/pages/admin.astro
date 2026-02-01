@@ -1,6 +1,8 @@
 ---
 // src/pages/admin.astro
 import Layout from '../layouts/Layout.astro';
+
+const currentYear = new Date().getFullYear();
 ---
 
 <Layout title="Staff Portal | CS Shingi">
@@ -52,8 +54,8 @@ import Layout from '../layouts/Layout.astro';
             SECURE CONNECTION
           </p>
           <p class="text-[10px] text-neutral-800 font-mono">
-            CS SHINGI & ASSOCIATES © 2026
-          </p>
+                CS SHINGI & ASSOCIATES © {currentYear}
+              </p>
         </div>
 
       </div>

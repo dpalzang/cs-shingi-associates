@@ -1,25 +1,33 @@
 ---
 // src/layouts/Layout.astro
-import { ClientRouter } from 'astro:transitions';
+import { ClientRouter } from "astro:transitions";
+import SEO from '../components/SEO.astro';
 
 interface Props {
 	title: string;
 	description?: string;
+	image?: string;
 }
 
-const { title, description = "CS Shingi & Associates - Architectural Excellence" } = Astro.props;
+const {
+	title,
+	description = "CS Shingi & Associates - Architectural Excellence",
+	image,
+} = Astro.props;
+
 ---
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
 	<head>
+		<SEO title={title} description={description} image={image} />
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-		
+
 		<ClientRouter />
 	</head>
 	<body>
@@ -30,11 +38,11 @@ const { title, description = "CS Shingi & Associates - Architectural Excellence"
 <style is:global>
 	/* Global Reset & Base Styles */
 	html {
-		font-family: 'Inter', system-ui, sans-serif;
+		font-family: "Inter", system-ui, sans-serif;
 		background: #fcfcfc;
 		color: #1a1a1a;
 	}
-	
+
 	/* Smooth scrolling for anchor links */
 	html {
 		scroll-behavior: smooth;

@@ -16,20 +16,18 @@ export default function Navigation() {
         window.addEventListener('scroll', handleScroll);
 
         // 2. INTERSECTION OBSERVER: Detects background brightness
-        // This checks the top 5% of the screen to see what section is currently behind the nav.
         const observerCallback = (entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     const style = window.getComputedStyle(entry.target);
                     const bg = style.backgroundColor;
 
-                    // If background is transparent/0 opacity, ignore it (keep previous state)
+                    // If background is transparent/0 opacity, ignore it
                     if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
                          const rgb = bg.match(/\d+/g);
                          if (rgb) {
-                             // Formula for brightness (standard perceived brightness)
+                             // Formula for brightness
                              const brightness = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) / 1000);
-                             // If brightness < 128, it's Dark. Otherwise, it's Light.
                              setIsDarkBackground(brightness < 128);
                          }
                     }
@@ -39,11 +37,10 @@ export default function Navigation() {
 
         const observer = new IntersectionObserver(observerCallback, {
              root: null,
-             rootMargin: '-5% 0px -95% 0px', // Inspects the top strip of the viewport
+             rootMargin: '-5% 0px -95% 0px', 
              threshold: 0
         });
 
-        // Observe all main sections
         document.querySelectorAll('section, footer').forEach(s => observer.observe(s));
 
         return () => {
@@ -52,13 +49,26 @@ export default function Navigation() {
         };
     }, []);
 
+    // 4. SCROLL LOCK LOGIC (NEW)
+    // Prevents main page interaction/scrolling when menu is open
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+
+        // Cleanup: Ensure scroll is re-enabled if component unmounts
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isMenuOpen]);
+
     const menuItems = [
         'Work', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'
     ];
 
     // 3. COLOR LOGIC
-    // If Menu is OPEN -> Always GOLD (because drawer is black).
-    // If Menu is CLOSED -> Depends on Background (Gold for Dark, Obsidian for Light).
     const iconColorClass = isMenuOpen 
         ? 'text-gold-200' 
         : (isDarkBackground ? 'text-gold-200' : 'text-obsidian');
@@ -88,7 +98,7 @@ export default function Navigation() {
                     />
                 </a>
 
-                {/* ICONS - Dynamic Class Applied Here */}
+                {/* ICONS */}
                 <div className={`flex items-center gap-6 z-50 relative transition-colors duration-500 ${iconColorClass}`}>
 
                     <button
@@ -105,12 +115,12 @@ export default function Navigation() {
                         className="group focus:outline-none p-2"
                     >
                         {isMenuOpen ? (
-                            // Close X (Always Gold when open)
+                            // Close X
                             <svg width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="text-gold-400">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         ) : (
-                            // Hamburger (Lines change color based on background)
+                            // Hamburger
                             <div className="flex flex-col items-end gap-1.5">
                                 <span className={`block h-[1px] ${hamburgerLineColor} transition-all duration-300 w-8 group-hover:bg-gold-400`}></span>
                                 <span className={`block h-[1px] ${hamburgerLineColor} transition-all duration-300 w-6 group-hover:w-8 group-hover:bg-gold-400`}></span>
@@ -134,7 +144,7 @@ export default function Navigation() {
             >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-gold-900/20 to-transparent pointer-events-none"></div>
 
-                <div className="relative flex flex-col h-full pt-32 px-12 pb-12">
+                <div className="relative flex flex-col h-full pt-32 px-12 pb-12 overflow-y-auto">
                     <nav className="flex flex-col space-y-8">
                         {menuItems.map((item, index) => (
                             <a
