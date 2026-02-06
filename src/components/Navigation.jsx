@@ -112,11 +112,7 @@ export default function Navigation() {
                     <img
                         src="/images/logo.jpg"
                         alt="CS SINGHI & Associates"
-                        className={`transition-all duration-500 object-contain ${
-                            isScrolled 
-                                ? 'h-[60px] md:h-[72px]' 
-                                : 'h-24 md:h-[120px]'
-                        }`}
+                       className={`transition-all duration-500 object-contain ${isScrolled ? 'h-10 md:h-12' : 'h-16 md:h-20'}`}
                     />
                 </a>
 
