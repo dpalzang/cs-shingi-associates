@@ -1,7 +1,10 @@
 {
   "name": "cs-singhi-associates",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1",
+  "engines": {
+    "node": ">=24.13.0" 
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
