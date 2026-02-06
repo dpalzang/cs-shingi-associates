@@ -21,7 +21,7 @@ gallery:
 
 ## Community & Nature
 
-Located in the serene hills of Namchi, **The Himalayan Heights** was a landmark project for CS Shingi & Associates, focusing on community living integrated with traditional Sikkimese architecture.
+Located in the serene hills of Namchi, **The Himalayan Heights** was a landmark project for CS Singhi & Associates, focusing on community living integrated with traditional Sikkimese architecture.
 
 ### Design Philosophy
 We utilized local stone and sustainable timber to ensure the villas blend into the hillside rather than dominating it. The project sold out within 3 months of launch, a testament to the demand for quality, nature-centric housing.

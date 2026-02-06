@@ -1,7 +1,7 @@
 ---
 // src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.jsx'; 
+// Note: Navigation import removed because it's in Layout now
 import HeroSection from '../components/HeroSection.astro';
 import FeaturedProperties from '../components/FeaturedProperties.astro'; 
 import AnniversaryShowcase from '../components/AnniversaryShowcase.astro';
@@ -9,16 +9,12 @@ import EthicsPhilosophy from '../components/EthicsPhilosophy.astro';
 import ServicesShowcase from '../components/ServicesShowcase.astro';
 import PanIndiaVision from '../components/PanIndiaVision.astro';
 
-export const title = "CS Shingi & Associates | Architecture & Design";
+export const title = "CS Singhi & Associates | Architecture & Design";
 export const description = "Celebrating 25 years of ethical architecture, property, and design innovation.";
-
-const currentYear = new Date().getFullYear();
 ---
 
 <Layout title={title} description={description}>
   
-  <Navigation client:load />
-
   <main class="min-h-screen">
     <HeroSection />
 
@@ -32,25 +28,6 @@ const currentYear = new Date().getFullYear();
 
     <PanIndiaVision />
 
-    <footer id="contact" class="py-32 px-8 md:px-32 text-center bg-white border-t border-gray-100">
-      <h4 class="text-[10px] uppercase tracking-[0.5em] text-neutral-400 mb-12">Ready to Build?</h4>
-      <a href="mailto:info@csshingi.com" class="text-5xl md:text-8xl font-light tracking-tighter hover:text-amber-800 transition-colors duration-500">
-        Let's collaborate.
-      </a>
-      <div class="mt-32 grid md:grid-cols-3 text-[10px] tracking-widest uppercase text-neutral-500 text-left border-t border-neutral-100 pt-12">
-        <div>
-          <span class="block text-black font-bold mb-2">CS Shingi & Associates</span>
-          © {currentYear} All Rights Reserved
-        </div>
-        <div class="my-8 md:my-0 md:text-center">
-          <span class="block text-black font-bold mb-2">Locations</span>
-          Gangtok • Delhi • Mumbai
-        </div>
-        <div class="md:text-right">
-          <span class="block text-black font-bold mb-2">Social</span>
-          <a href="#" class="hover:text-black">Instagram</a> / <a href="#" class="hover:text-black">LinkedIn</a>
-        </div>
-      </div>
-    </footer>
+    {/* Footer removed from here */}
   </main>
 </Layout>

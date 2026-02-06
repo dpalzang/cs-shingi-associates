@@ -31,7 +31,7 @@ const MOCK_DATA = [
         id: 4,
         type: 'Leadership',
         date: 'Principal',
-        title: 'Chhatra S. Shingi',
+        title: 'Chhatra S. Singhi',
         image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887',
         category: 'People'
     },

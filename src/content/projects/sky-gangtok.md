@@ -13,7 +13,7 @@ details:
   - label: "Bedrooms"
     value: "4 BHK Duplex"
   - label: "Architect"
-    value: "CS Shingi"
+    value: "CS Singhi"
 gallery:
   - "/images/projects/sky-gangtok/view-1.jpg"
   - "/images/projects/sky-gangtok/interior.jpg"

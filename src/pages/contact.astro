@@ -1,0 +1,379 @@
+---
+// src/pages/contact.astro
+import Layout from "../layouts/Layout.astro";
+const currentYear = new Date().getFullYear();
+---
+
+<Layout
+    title="Contact Us | CS Singhi & Associates"
+    description="Get in touch for architectural excellence."
+    showFooter={false}
+>
+    <section
+        class="min-h-screen pt-40 pb-12 px-6 md:px-12 relative overflow-hidden bg-transparent flex flex-col"
+    >
+        {/* BACKGROUND */}
+        <div
+            class="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-gold-900/10 blur-[100px] rounded-full pointer-events-none animate-pulse-slow"
+        >
+        </div>
+
+        <div class="max-w-[1400px] mx-auto relative z-10 flex-grow w-full">
+            {/* --- HEADER --- */}
+            <div class="mb-24 text-center animate-fade-in-up">
+                <span
+                    class="inline-block py-1 px-3 border border-white/10 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-gold-400 uppercase mb-6 backdrop-blur-md"
+                >
+                    Get in Touch
+                </span>
+                <h1
+                    class="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-tight"
+                >
+                    Start Your <span class="font-serif italic text-neutral-500"
+                        >Journey</span
+                    >
+                </h1>
+            </div>
+
+            {/* --- CONTENT GRID --- */}
+            <div
+                class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start mb-32"
+            >
+                {/* LEFT COLUMN: The Web Form */}
+                <div
+                    class="bg-neutral-900/50 backdrop-blur-md border border-white/5 p-8 md:p-12 rounded-3xl relative overflow-hidden group shadow-2xl"
+                >
+                    <div
+                        class="absolute inset-0 bg-gold-900/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                    >
+                    </div>
+
+                    <form
+                        action="#"
+                        method="POST"
+                        class="space-y-8 relative z-10"
+                    >
+                        <div class="space-y-5">
+                            <div>
+                                <label
+                                    for="name"
+                                    class="block text-[10px] uppercase tracking-widest text-gold-400/80 mb-2 font-bold ml-1"
+                                    >Name</label
+                                >
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    placeholder="John Doe"
+                                    class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-neutral-600 focus:outline-none focus:border-gold-500/50 focus:bg-black/60 transition-all"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label
+                                    for="email"
+                                    class="block text-[10px] uppercase tracking-widest text-gold-400/80 mb-2 font-bold ml-1"
+                                    >Email</label
+                                >
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="john@example.com"
+                                    class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-neutral-600 focus:outline-none focus:border-gold-500/50 focus:bg-black/60 transition-all"
+                                    required
+                                />
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label
+                                        for="phone"
+                                        class="block text-[10px] uppercase tracking-widest text-gold-400/80 mb-2 font-bold ml-1"
+                                        >Phone</label
+                                    >
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="+91..."
+                                        class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-neutral-600 focus:outline-none focus:border-gold-500/50 focus:bg-black/60 transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label
+                                        for="service"
+                                        class="block text-[10px] uppercase tracking-widest text-gold-400/80 mb-2 font-bold ml-1"
+                                        >Interest</label
+                                    >
+                                    <select
+                                        id="service"
+                                        name="service"
+                                        class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-gold-500/50 focus:bg-black/60 transition-all appearance-none cursor-pointer"
+                                    >
+                                        <option>Architecture</option>
+                                        <option>Interior Design</option>
+                                        <option>Construction</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label
+                                    for="message"
+                                    class="block text-[10px] uppercase tracking-widest text-gold-400/80 mb-2 font-bold ml-1"
+                                    >Message</label
+                                >
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows="4"
+                                    placeholder="Tell us about your vision..."
+                                    class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-neutral-600 focus:outline-none focus:border-gold-500/50 focus:bg-black/60 transition-all"
+                                    required></textarea>
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full bg-white text-black font-bold text-xs md:text-sm py-5 rounded-xl uppercase tracking-widest hover:bg-gold-400 transition-colors duration-300 shadow-lg hover:shadow-gold-900/20"
+                        >
+                            Send Proposal
+                        </button>
+                    </form>
+                </div>
+
+                {/* RIGHT COLUMN: Text & Contact Options */}
+                <div class="flex flex-col h-full py-4">
+                    <div class="mb-12">
+                        <h3
+                            class="text-3xl md:text-4xl font-light text-white mb-6 leading-tight"
+                        >
+                            Let's build something <br />
+                            <span class="font-serif italic text-neutral-500"
+                                >extraordinary.</span
+                            >
+                        </h3>
+                        <p
+                            class="text-neutral-400 text-sm leading-relaxed max-w-md"
+                        >
+                            Whether you have a specific project in mind or just
+                            want to explore possibilities, our team is ready to
+                            listen and create.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        {/* WhatsApp */}
+                        <a
+                            href="https://wa.me/919876543210"
+                            target="_blank"
+                            rel="noreferrer"
+                            class="group flex items-center gap-6 p-5 rounded-2xl bg-neutral-900/30 border border-white/5 hover:border-gold-500/30 hover:bg-neutral-900/60 transition-all duration-300"
+                        >
+                            <div
+                                class="w-12 h-12 rounded-full bg-[#25D366]/10 flex items-center justify-center text-[#25D366] group-hover:scale-110 transition-transform"
+                            >
+                                <svg
+                                    width="24"
+                                    height="24"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                    ><path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.232-.298.347-.497.115-.198.058-.372-.029-.546-.087-.174-.792-1.908-1.085-2.613-.284-.685-.572-.591-.792-.602-.206-.011-.442-.014-.678-.014-.236 0-.619.088-.943.444-.324.356-1.238 1.21-1.238 2.951 0 1.742 1.268 3.424 1.444 3.672.176.248 2.497 3.813 6.05 5.345 3.553 1.532 3.553 1.022 4.195.955.642-.067 2.059-.841 2.348-1.652.289-.811.289-1.507.203-1.653-.086-.146-.312-.234-.609-.383z"
+                                    ></path></svg
+                                >
+                            </div>
+                            <div>
+                                <span
+                                    class="block text-white text-lg font-medium mb-1"
+                                    >WhatsApp</span
+                                >
+                                <span
+                                    class="text-xs text-neutral-500 uppercase tracking-widest group-hover:text-gold-400 transition-colors"
+                                    >Chat Instantly</span
+                                >
+                            </div>
+                        </a>
+
+                        {/* Email */}
+                        <a
+                            href="mailto:info@cssinghi.com"
+                            class="group flex items-center gap-6 p-5 rounded-2xl bg-neutral-900/30 border border-white/5 hover:border-gold-500/30 hover:bg-neutral-900/60 transition-all duration-300"
+                        >
+                            <div
+                                class="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-400 group-hover:scale-110 transition-transform"
+                            >
+                                <svg
+                                    width="24"
+                                    height="24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    viewBox="0 0 24 24"
+                                    ><path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                    ></path></svg
+                                >
+                            </div>
+                            <div>
+                                <span
+                                    class="block text-white text-lg font-medium mb-1"
+                                    >Email Us</span
+                                >
+                                <span
+                                    class="text-xs text-neutral-500 uppercase tracking-widest group-hover:text-gold-400 transition-colors"
+                                    >info@cssinghi.com</span
+                                >
+                            </div>
+                        </a>
+
+                        {/* Phone */}
+                        <a
+                            href="tel:+919876543210"
+                            class="group flex items-center gap-6 p-5 rounded-2xl bg-neutral-900/30 border border-white/5 hover:border-gold-500/30 hover:bg-neutral-900/60 transition-all duration-300"
+                        >
+                            <div
+                                class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform"
+                            >
+                                <svg
+                                    width="24"
+                                    height="24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    viewBox="0 0 24 24"
+                                    ><path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                                    ></path></svg
+                                >
+                            </div>
+                            <div>
+                                <span
+                                    class="block text-white text-lg font-medium mb-1"
+                                    >Call Us</span
+                                >
+                                <span
+                                    class="text-xs text-neutral-500 uppercase tracking-widest group-hover:text-gold-400 transition-colors"
+                                    >+91 98765 43210</span
+                                >
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {/* --- THE MAP SECTION --- */}
+            <div class="mb-24">
+                {/* 1. SEPARATE LABEL SECTION (Moved outside the map) */}
+                <div class="mb-8 pl-2 border-l-2 border-gold-500">
+                    <h3 class="text-4xl md:text-5xl font-light text-white mb-2">
+                        Locate Us
+                    </h3>
+                </div>
+
+                {/* 2. MAP CONTAINER (Clean, no overlap) */}
+                <div
+                    class="w-full h-[500px] rounded-3xl overflow-hidden border border-white/5 relative group shadow-2xl"
+                >
+                    <div
+                        class="absolute inset-0 bg-gold-900/5 pointer-events-none z-10 mix-blend-overlay"
+                    >
+                    </div>
+                    <iframe
+                        src="https://maps.google.com/maps?q=C%20S%20SINGHI%20%26%20ASSOCIATES%2C%20Lal%20Market%20Rd%2C%20Gangtok&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        width="100%"
+                        height="100%"
+                        style="border:0; filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(85%);"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="w-full h-full"></iframe>
+                </div>
+            </div>
+        </div>
+
+        {/* --- MINI FOOTER --- */}
+        <div
+            class="w-full max-w-[1400px] mx-auto mt-auto pt-8 border-t border-white/5 relative z-10"
+        >
+            <div
+                class="grid md:grid-cols-3 text-[10px] tracking-widest uppercase text-neutral-500 text-left"
+            >
+                <div>
+                    <span class="block text-white font-bold mb-2"
+                        >CS Singhi & Associates</span
+                    >
+                    © {currentYear} All Rights Reserved
+                    <div
+                        class="text-[11px] text-neutral-500 mt-4 border-t border-white/5 pt-4 inline-block md:block tracking-wide"
+                    >
+                        <p>Designed with ❤️ in the Himalayas</p>
+                        <p class="mt-1">
+                            By <a
+                                href="http://dpalzang.github.io/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="hover:text-white transition-colors underline decoration-neutral-700 underline-offset-4 hover:decoration-white"
+                                >Dorjee Palzang</a
+                            >
+                        </p>
+                    </div>
+                </div>
+                <div class="my-8 md:my-0 md:text-center">
+                    <span class="block text-white font-bold mb-2"
+                        >Locations</span
+                    >
+                    Gangtok • Delhi • Mumbai
+                </div>
+                <div class="md:text-right">
+                    <span class="block text-white font-bold mb-2">Social</span>
+                    <a href="#" class="hover:text-[#b88a44] transition-colors"
+                        >Instagram</a
+                    > / <a
+                        href="#"
+                        class="hover:text-[#b88a44] transition-colors"
+                        >LinkedIn</a
+                    >
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-fade-in-up {
+        animation: fadeInUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes pulseSlow {
+        0%,
+        100% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+    }
+    .animate-pulse-slow {
+        animation: pulseSlow 8s infinite ease-in-out;
+    }
+</style>

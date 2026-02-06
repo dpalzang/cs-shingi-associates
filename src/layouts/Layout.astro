@@ -1,20 +1,26 @@
 ---
 // src/layouts/Layout.astro
 import { ClientRouter } from "astro:transitions";
-import SEO from '../components/SEO.astro';
+import SEO from "../components/SEO.astro";
+import Navigation from "../components/Navigation.jsx";
 
 interface Props {
 	title: string;
 	description?: string;
 	image?: string;
+	showFooter?: boolean;
 }
 
 const {
 	title,
-	description = "CS Shingi & Associates - Architectural Excellence",
+	description = "CS Singhi & Associates - Architectural Excellence",
 	image,
+	showFooter = true,
 } = Astro.props;
 
+const currentYear = new Date().getFullYear();
+const pathname = new URL(Astro.request.url).pathname;
+const isHomePage = pathname === "/" || pathname === "";
 ---
 
 <!doctype html>
@@ -27,30 +33,213 @@ const {
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-
 		<ClientRouter />
 	</head>
-	<body>
-		<slot />
+
+	<body class="bg-[#050505] text-white antialiased">
+		{/* --- FIXED BACKGROUND LAYER --- */}
+		<div class="fixed inset-0 z-0 pointer-events-none">
+			<div
+				class="absolute inset-0 opacity-[0.15]"
+				style="background-image: url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 40L40 0H20L0 20M40 40V20L20 40\' stroke=\'%23b88a44\' stroke-width=\'1\' fill=\'none\'/%3E%3C/svg%3E'); background-size: 40px 40px;"
+			>
+			</div>
+			<div
+				class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#b88a44] opacity-10 blur-[100px] rounded-full"
+			>
+			</div>
+			<div
+				class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#222] opacity-40 blur-[100px] rounded-full"
+			>
+			</div>
+			<div
+				class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_95%)]"
+			>
+			</div>
+		</div>
+
+		{/* --- CONTENT WRAPPER --- */}
+		<div class="relative z-10 flex flex-col min-h-screen">
+			<Navigation client:load />
+
+			{/* --- MINIMALIST GIANT ARROW --- */}
+			{
+				!isHomePage && (
+					<button
+						id="global-back-btn"
+						aria-label="Go Back"
+						class="
+                        fixed z-50 
+                        top-32 left-6 md:left-12
+                        flex items-center justify-center
+                        p-0 bg-transparent border-none cursor-pointer
+                        text-white/80 hover:text-[#b88a44]
+                        
+                        /* Base Transitions */
+                        transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]
+                        
+                        /* Hover Effect */
+                        hover:-translate-x-3 hover:opacity-100
+                        group
+                    "
+					>
+						<svg
+							width="64"
+							height="64"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="md:w-20 md:h-20"
+						>
+							<line x1="19" y1="12" x2="5" y2="12" />
+							<polyline points="12 19 5 12 12 5" />
+						</svg>
+					</button>
+				)
+			}
+
+			<main class="flex-grow">
+				<slot />
+			</main>
+
+			{/* FOOTER */}
+			{
+				showFooter && (
+					<footer
+						id="contact"
+						class="py-32 px-8 md:px-32 text-center bg-[#0a0a0a]/90 backdrop-blur-sm border-t border-white/5 text-white"
+					>
+						<h4 class="text-[10px] uppercase tracking-[0.5em] text-neutral-500 mb-12">
+							Ready to Build?
+						</h4>
+						<a
+							href="/contact"
+							class="text-5xl md:text-8xl font-light tracking-tighter hover:text-[#b88a44] transition-colors duration-500"
+						>
+							Let's collaborate.
+						</a>
+						<div class="mt-32 grid md:grid-cols-3 text-[10px] tracking-widest uppercase text-neutral-500 text-left border-t border-white/10 pt-12">
+							{/* COLUMN 1: Copyright & Credits */}
+							<div>
+								<span class="block text-white font-bold mb-2">
+									CS Singhi & Associates
+								</span>
+								<span class="block mb-4">
+									© {currentYear} All Rights Reserved
+								</span>
+
+								{/* NEW CREDITS SECTION */}
+								{/* NEW CREDITS SECTION */}
+								{/* Changed text-[9px] -> text-[11px] and text-neutral-600 -> text-neutral-500 */}
+								<div class="text-[11px] text-neutral-500 mt-4 border-t border-white/5 pt-4 inline-block md:block tracking-wide">
+									<p>Designed with ❤️ in the Himalayas</p>
+									<p class="mt-1">
+										By{" "}
+										<a
+											href="http://dpalzang.github.io/"
+											target="_blank"
+											rel="noopener noreferrer"
+											class="hover:text-white transition-colors underline decoration-neutral-700 underline-offset-4 hover:decoration-white"
+										>
+											Dorjee Palzang
+										</a>
+									</p>
+								</div>
+							</div>
+
+							{/* COLUMN 2: Locations */}
+							<div class="my-8 md:my-0 md:text-center">
+								<span class="block text-white font-bold mb-2">
+									Locations
+								</span>
+								Gangtok • Delhi • Mumbai
+							</div>
+
+							{/* COLUMN 3: Social */}
+							<div class="md:text-right">
+								<span class="block text-white font-bold mb-2">
+									Social
+								</span>
+								<a
+									href="#"
+									class="hover:text-[#b88a44] transition-colors"
+								>
+									Instagram
+								</a>{" "}
+								/{" "}
+								<a
+									href="#"
+									class="hover:text-[#b88a44] transition-colors"
+								>
+									LinkedIn
+								</a>
+							</div>
+						</div>
+					</footer>
+				)
+			}
+		</div>
+
+		{/* --- FIXED SCRIPT --- */}
+		<script>
+			let currentScrollHandler = null;
+
+			document.addEventListener("astro:page-load", () => {
+				const backBtn = document.getElementById("global-back-btn");
+
+				if (currentScrollHandler) {
+					window.removeEventListener("scroll", currentScrollHandler);
+					currentScrollHandler = null;
+				}
+
+				if (backBtn) {
+					backBtn.addEventListener("click", (e) => {
+						e.preventDefault();
+						if (window.history.length > 1) {
+							window.history.back();
+						} else {
+							window.location.href = "/";
+						}
+					});
+
+					currentScrollHandler = () => {
+						if (window.scrollY > 100) {
+							backBtn.style.opacity = "0";
+							backBtn.style.transform = "translateY(-20px)";
+							backBtn.style.pointerEvents = "none";
+						} else {
+							backBtn.style.opacity = "1";
+							backBtn.style.transform = "translateY(0)";
+							backBtn.style.pointerEvents = "auto";
+						}
+					};
+
+					window.addEventListener("scroll", currentScrollHandler);
+					currentScrollHandler();
+				}
+			});
+		</script>
 	</body>
 </html>
 
 <style is:global>
-	/* Global Reset & Base Styles */
 	html {
 		font-family: "Inter", system-ui, sans-serif;
-		background: #fcfcfc;
-		color: #1a1a1a;
-	}
-
-	/* Smooth scrolling for anchor links */
-	html {
+		background: #050505;
+		color: #ffffff;
 		scroll-behavior: smooth;
 	}
-
-	/* Optional: Custom Selection Color */
-	::selection {
-		background-color: #1a1a1a; /* Black */
-		color: #ffffff;
+	body::-webkit-scrollbar {
+		width: 8px;
+	}
+	body::-webkit-scrollbar-track {
+		background: #050505;
+	}
+	body::-webkit-scrollbar-thumb {
+		background: #333;
+		border-radius: 4px;
 	}
 </style>

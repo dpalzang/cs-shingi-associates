@@ -7,26 +7,21 @@ export default function Navigation() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     
-    // 1. STATE: Track if the background behind the header is dark
     const [isDarkBackground, setIsDarkBackground] = useState(true);
 
     useEffect(() => {
-        // Scroll Listener (for shrinking the logo)
         const handleScroll = () => setIsScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
 
-        // 2. INTERSECTION OBSERVER: Detects background brightness
         const observerCallback = (entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     const style = window.getComputedStyle(entry.target);
                     const bg = style.backgroundColor;
 
-                    // If background is transparent/0 opacity, ignore it
                     if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
                          const rgb = bg.match(/\d+/g);
                          if (rgb) {
-                             // Formula for brightness
                              const brightness = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) / 1000);
                              setIsDarkBackground(brightness < 128);
                          }
@@ -49,8 +44,7 @@ export default function Navigation() {
         };
     }, []);
 
-    // 4. SCROLL LOCK LOGIC (NEW)
-    // Prevents main page interaction/scrolling when menu is open
+    // 4. SCROLL LOCK LOGIC
     useEffect(() => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
@@ -58,14 +52,13 @@ export default function Navigation() {
             document.body.style.overflow = '';
         }
 
-        // Cleanup: Ensure scroll is re-enabled if component unmounts
         return () => {
             document.body.style.overflow = '';
         };
     }, [isMenuOpen]);
 
     const menuItems = [
-        'Work', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'
+        'Projects', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'
     ];
 
     // 3. COLOR LOGIC
@@ -93,8 +86,13 @@ export default function Navigation() {
                 <a href="/" className="z-50 relative block hover:opacity-80 transition-opacity">
                     <img
                         src="/images/logo.jpg"
-                        alt="CS SHINGI & Associates"
-                        className={`transition-all duration-500 object-contain ${isScrolled ? 'h-10 md:h-12' : 'h-16 md:h-20'}`}
+                        alt="CS SINGHI & Associates"
+                        // UPDATED SIZE CLASSES HERE (150% bigger)
+                        className={`transition-all duration-500 object-contain ${
+                            isScrolled 
+                                ? 'h-[60px] md:h-[72px]'  // Scrolled: 1.5x original
+                                : 'h-24 md:h-[120px]'     // Default: 1.5x original
+                        }`}
                     />
                 </a>
 
@@ -149,7 +147,7 @@ export default function Navigation() {
                         {menuItems.map((item, index) => (
                             <a
                                 key={item}
-                                href={`#${item.toLowerCase()}`}
+                                href={`/${item.toLowerCase()}`}
                                 className={`group relative inline-block w-max text-3xl md:text-4xl font-serif font-light text-white transition-all duration-300 transform ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
                                     }`}
                                 style={{ transitionDelay: `${150 + (index * 50)}ms` }}

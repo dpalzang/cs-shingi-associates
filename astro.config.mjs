@@ -7,7 +7,7 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   output: 'server',
-  site: 'https://cs-shingi-associates.vercel.app',
+  site: 'https://cs-singhi-associates.vercel.app',
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),

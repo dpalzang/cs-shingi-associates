@@ -148,7 +148,7 @@ export default function HeroText() {
         {/* --- BRAND HEADER --- */}
         <div className="mt-4 relative z-20">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mb-6 text-white drop-shadow-xl">
-              C.S. Shingi & <span className="font-normal italic font-serif text-gold-200">Associates</span>
+              C.S. Singhi & <span className="font-normal italic font-serif text-gold-200">Associates</span>
             </h1>
             
             <p className="text-sm md:text-lg font-light max-w-lg mx-auto leading-relaxed text-neutral-400/90 tracking-wide">

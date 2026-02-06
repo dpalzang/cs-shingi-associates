@@ -1,0 +1,120 @@
+---
+// src/pages/projects.astro
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// 1. Fetch & Sort
+const allProjects = await getCollection('projects');
+const sortedProjects = allProjects.sort((a, b) => {
+  return parseInt(b.data.year) - parseInt(a.data.year);
+});
+---
+
+<Layout title="Portfolio | CS Singhi & Associates" description="A curation of our architectural milestones.">
+  
+  {/* FIX: Changed 'bg-[#0a0a0a]' to 'bg-transparent'. 
+      Now the subtle lines and graphics from your Layout.astro will show through!
+  */}
+  <section class="bg-transparent min-h-screen pt-40 pb-32 px-6 md:px-12 relative overflow-hidden">
+    
+    <div class="max-w-[1400px] mx-auto relative z-10">
+
+      {/* --- REFINED HEADER --- */}
+      <div class="mb-24 md:mb-32 text-center animate-fade-in-up">
+        <span class="inline-block py-1 px-3 border border-white/10 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-gold-400 uppercase mb-6 backdrop-blur-md">
+          The Portfolio
+        </span>
+        
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-tight">
+          Curated <span class="font-serif italic text-neutral-500">Excellence</span>
+        </h1>
+        
+        <div class="h-[1px] w-24 bg-gradient-to-r from-transparent via-gold-500/50 to-transparent mx-auto mt-8"></div>
+      </div>
+
+      {/* --- FLUID GRID --- */}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+        {sortedProjects.map((project, index) => (
+          <a 
+            href={`/projects/${project.slug}`} 
+            class="
+              group relative block
+              aspect-[4/5] md:aspect-[3/4] w-full
+              rounded-2xl 
+              overflow-hidden
+              /* Make card background slightly lighter than page so it pops */
+              bg-neutral-900/80 backdrop-blur-sm
+              border border-white/5
+              transition-all duration-500 ease-out
+              hover:shadow-[0_20px_40px_-15px_rgba(184,138,68,0.15)]
+              hover:border-gold-500/30
+            "
+            style={`transition-delay: ${index * 100}ms`}
+          >
+            
+            {/* 1. IMAGE LAYER */}
+            <div class="absolute inset-0 w-full h-full overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90 z-10 opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
+              
+              <img 
+                src={project.data.coverImage} 
+                alt={project.data.title}
+                class="
+                  w-full h-full object-cover 
+                  grayscale-[10%] group-hover:grayscale-0 
+                  scale-100 group-hover:scale-105 
+                  transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)]
+                "
+              />
+            </div>
+
+            {/* 2. TOP BADGES */}
+            <div class="absolute top-6 left-6 right-6 z-20 flex justify-between items-start opacity-100 transition-opacity duration-300">
+               <span class="bg-black/40 backdrop-blur-md border border-white/10 text-white px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full">
+                  {project.data.year}
+               </span>
+               <span class="bg-gold-500 text-black px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg shadow-gold-500/20">
+                  {project.data.status}
+               </span>
+            </div>
+
+            {/* 3. BOTTOM INFO */}
+            <div class="absolute bottom-0 left-0 w-full p-8 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+              
+              <div class="overflow-hidden">
+                <span class="text-gold-400 text-[9px] font-bold tracking-[0.2em] uppercase mb-2 block transform transition-transform duration-500 group-hover:-translate-y-1">
+                    {project.data.location}
+                </span>
+                
+                <h2 class="text-2xl md:text-3xl font-light text-white leading-tight mb-6">
+                    {project.data.title}
+                </h2>
+
+                <div class="flex items-center gap-3 group/btn">
+                  <span class="text-white text-[10px] uppercase tracking-[0.3em] font-bold border-b border-white/30 pb-1 group-hover/btn:border-gold-400 group-hover/btn:text-gold-400 transition-colors duration-300">
+                    View Case Study
+                  </span>
+                  <span class="text-white text-lg transform group-hover/btn:translate-x-2 group-hover/btn:text-gold-400 transition-all duration-300">
+                    →
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+</style>
