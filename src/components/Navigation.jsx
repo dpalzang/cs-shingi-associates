@@ -1,16 +1,37 @@
 // src/components/Navigation.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react'; // 1. Added useRef
 import SearchOverlay from './SearchOverlay.jsx';
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
     
+    // Scroll states
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isVisible, setIsVisible] = useState(true); // 2. New state for visibility
+    const lastScrollY = useRef(0); // 3. Ref to track previous scroll position
+
     const [isDarkBackground, setIsDarkBackground] = useState(true);
 
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 50);
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            // Logic 1: Track if we are not at the top (for background/sizing)
+            setIsScrolled(currentScrollY > 50);
+
+            // Logic 2: Determine Scroll Direction for Visibility
+            if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+                // Scrolling DOWN and not at top -> Hide
+                setIsVisible(false);
+            } else {
+                // Scrolling UP -> Show
+                setIsVisible(true);
+            }
+
+            lastScrollY.current = currentScrollY;
+        };
+
         window.addEventListener('scroll', handleScroll);
 
         const observerCallback = (entries) => {
@@ -44,7 +65,7 @@ export default function Navigation() {
         };
     }, []);
 
-    // 4. SCROLL LOCK LOGIC
+    // SCROLL LOCK LOGIC
     useEffect(() => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
@@ -61,7 +82,7 @@ export default function Navigation() {
         'Projects', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'
     ];
 
-    // 3. COLOR LOGIC
+    // COLOR LOGIC
     const iconColorClass = isMenuOpen 
         ? 'text-gold-200' 
         : (isDarkBackground ? 'text-gold-200' : 'text-obsidian');
@@ -78,20 +99,23 @@ export default function Navigation() {
             />
 
             <header
-                className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 md:px-12 flex justify-between items-center bg-transparent ${
-                    (isScrolled || isMenuOpen) ? 'py-4' : 'py-8'
-                }`}
+                // 4. UPDATED CLASSES:
+                // Added transform and conditional translate-y based on 'isVisible' and 'isMenuOpen'
+                className={`fixed top-0 left-0 w-full z-50 px-6 md:px-12 flex justify-between items-center bg-transparent 
+                    transition-all duration-500 ease-in-out
+                    ${(isScrolled || isMenuOpen) ? 'py-4' : 'py-8'}
+                    ${(isVisible || isMenuOpen) ? 'translate-y-0' : '-translate-y-full'}
+                `}
             >
                 {/* LOGO IMAGE */}
                 <a href="/" className="z-50 relative block hover:opacity-80 transition-opacity">
                     <img
                         src="/images/logo.jpg"
                         alt="CS SINGHI & Associates"
-                        // UPDATED SIZE CLASSES HERE (150% bigger)
                         className={`transition-all duration-500 object-contain ${
                             isScrolled 
-                                ? 'h-[60px] md:h-[72px]'  // Scrolled: 1.5x original
-                                : 'h-24 md:h-[120px]'     // Default: 1.5x original
+                                ? 'h-[60px] md:h-[72px]' 
+                                : 'h-24 md:h-[120px]'
                         }`}
                     />
                 </a>
@@ -113,12 +137,10 @@ export default function Navigation() {
                         className="group focus:outline-none p-2"
                     >
                         {isMenuOpen ? (
-                            // Close X
                             <svg width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="text-gold-400">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         ) : (
-                            // Hamburger
                             <div className="flex flex-col items-end gap-1.5">
                                 <span className={`block h-[1px] ${hamburgerLineColor} transition-all duration-300 w-8 group-hover:bg-gold-400`}></span>
                                 <span className={`block h-[1px] ${hamburgerLineColor} transition-all duration-300 w-6 group-hover:w-8 group-hover:bg-gold-400`}></span>
