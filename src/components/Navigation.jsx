@@ -1,3 +1,4 @@
+// src/components/Navigation.jsx
 import { useState, useEffect, useRef } from 'react';
 import SearchOverlay from './SearchOverlay.jsx';
 
@@ -101,15 +102,24 @@ export default function Navigation() {
             <header
                 className={`fixed top-0 left-0 w-full z-50 px-6 md:px-12 flex items-end justify-between bg-transparent 
                     transition-all duration-500 ease-in-out
-                    ${(isScrolled || isMenuOpen) ? 'py-4' : 'py-8'}
-                    ${(isVisible || isMenuOpen) ? 'translate-y-0' : '-translate-y-full'}
+                    ${/* FIX: Removed '|| isMenuOpen' here so it doesn't shrink when opening menu */
+                      isScrolled ? 'py-4' : 'py-8'}
+                    ${/* Ensure it stays visible if menu is open */
+                      (isVisible || isMenuOpen) ? 'translate-y-0' : '-translate-y-full'}
                 `}
             >
                 {/* --- LEFT AREA: Holds either Logo (Home) or Back Button (Inner) --- */}
-                <div className="flex items-center h-16 md:h-20 w-24"> {/* Fixed height container matches logo height */}
+                <div className="flex items-center h-16 md:h-20 w-24"> 
                     
-                    {/* BACK BUTTON (Only on Inner Pages) */}
-                    <div className={`transition-all duration-500 ${!isHomePage ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'}`}>
+                    {/* BACK BUTTON */}
+                    <div 
+                        className={`transition-all duration-500 
+                            ${(!isHomePage && !isMenuOpen) 
+                                ? 'opacity-100 translate-x-0' 
+                                : 'opacity-0 -translate-x-4 pointer-events-none'
+                            }
+                        `}
+                    >
                         <button 
                             onClick={handleBackClick}
                             className={`group flex items-center justify-center p-2 -ml-2 hover:text-[#b88a44] transition-colors ${iconColorClass}`}
@@ -128,8 +138,8 @@ export default function Navigation() {
                 <div 
                     className={`absolute top-1/2 transform -translate-y-1/2 transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] z-40
                         ${isHomePage 
-                            ? 'left-6 md:left-12 translate-x-0' // Home: Align Left
-                            : 'left-1/2 -translate-x-1/2'       // Other: Align Center
+                            ? 'left-6 md:left-12 translate-x-0' 
+                            : 'left-1/2 -translate-x-1/2'       
                         }
                     `}
                 >
