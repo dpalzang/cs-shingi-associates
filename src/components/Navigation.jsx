@@ -1,34 +1,37 @@
-// src/components/Navigation.jsx
-import { useState, useEffect, useRef } from 'react'; // 1. Added useRef
+import { useState, useEffect, useRef } from 'react';
 import SearchOverlay from './SearchOverlay.jsx';
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     
-    // Scroll states
+    // Scroll & Path states
     const [isScrolled, setIsScrolled] = useState(false);
-    const [isVisible, setIsVisible] = useState(true); // 2. New state for visibility
-    const lastScrollY = useRef(0); // 3. Ref to track previous scroll position
+    const [isVisible, setIsVisible] = useState(true);
+    const [isHomePage, setIsHomePage] = useState(true);
+    const lastScrollY = useRef(0);
 
     const [isDarkBackground, setIsDarkBackground] = useState(true);
 
     useEffect(() => {
+        const checkPath = () => {
+            const path = window.location.pathname;
+            setIsHomePage(path === '/' || path === '');
+        };
+        
+        checkPath();
+        document.addEventListener('astro:page-load', checkPath);
+        window.addEventListener('popstate', checkPath);
+
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
-
-            // Logic 1: Track if we are not at the top (for background/sizing)
             setIsScrolled(currentScrollY > 50);
 
-            // Logic 2: Determine Scroll Direction for Visibility
             if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-                // Scrolling DOWN and not at top -> Hide
                 setIsVisible(false);
             } else {
-                // Scrolling UP -> Show
                 setIsVisible(true);
             }
-
             lastScrollY.current = currentScrollY;
         };
 
@@ -39,7 +42,6 @@ export default function Navigation() {
                 if (entry.isIntersecting) {
                     const style = window.getComputedStyle(entry.target);
                     const bg = style.backgroundColor;
-
                     if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
                          const rgb = bg.match(/\d+/g);
                          if (rgb) {
@@ -52,37 +54,38 @@ export default function Navigation() {
         };
 
         const observer = new IntersectionObserver(observerCallback, {
-             root: null,
-             rootMargin: '-5% 0px -95% 0px', 
-             threshold: 0
+             root: null, rootMargin: '-5% 0px -95% 0px', threshold: 0
         });
 
         document.querySelectorAll('section, footer').forEach(s => observer.observe(s));
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
+            document.removeEventListener('astro:page-load', checkPath);
+            window.removeEventListener('popstate', checkPath);
             observer.disconnect();
         };
     }, []);
 
-    // SCROLL LOCK LOGIC
     useEffect(() => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
         }
-
-        return () => {
-            document.body.style.overflow = '';
-        };
+        return () => { document.body.style.overflow = ''; };
     }, [isMenuOpen]);
 
-    const menuItems = [
-        'Projects', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'
-    ];
+    const handleBackClick = () => {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = '/';
+        }
+    };
 
-    // COLOR LOGIC
+    const menuItems = ['Projects', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'];
+
     const iconColorClass = isMenuOpen 
         ? 'text-gold-200' 
         : (isDarkBackground ? 'text-gold-200' : 'text-obsidian');
@@ -93,45 +96,56 @@ export default function Navigation() {
 
     return (
         <>
-            <SearchOverlay
-                isOpen={isSearchOpen}
-                onClose={() => setIsSearchOpen(false)}
-            />
+            <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
             <header
-                // 4. UPDATED CLASSES:
-                // Added transform and conditional translate-y based on 'isVisible' and 'isMenuOpen'
-                className={`fixed top-0 left-0 w-full z-50 px-6 md:px-12 flex justify-between items-center bg-transparent 
+                className={`fixed top-0 left-0 w-full z-50 px-6 md:px-12 flex items-end justify-between bg-transparent 
                     transition-all duration-500 ease-in-out
                     ${(isScrolled || isMenuOpen) ? 'py-4' : 'py-8'}
                     ${(isVisible || isMenuOpen) ? 'translate-y-0' : '-translate-y-full'}
                 `}
             >
-                {/* LOGO IMAGE */}
-                <a href="/" className="z-50 relative block hover:opacity-80 transition-opacity">
-                    <img
-                        src="/images/logo.jpg"
-                        alt="CS SINGHI & Associates"
-                       className={`transition-all duration-500 object-contain ${isScrolled ? 'h-10 md:h-12' : 'h-16 md:h-20'}`}
-                    />
-                </a>
+                {/* --- LEFT AREA: Holds either Logo (Home) or Back Button (Inner) --- */}
+                <div className="flex items-center h-16 md:h-20 w-24"> {/* Fixed height container matches logo height */}
+                    
+                    {/* BACK BUTTON (Only on Inner Pages) */}
+                    <div className={`transition-all duration-500 ${!isHomePage ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'}`}>
+                        <button 
+                            onClick={handleBackClick}
+                            className={`group flex items-center justify-center p-2 -ml-2 hover:text-[#b88a44] transition-colors ${iconColorClass}`}
+                            aria-label="Go Back"
+                        >
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+                                <path d="M20 12H4" />
+                                <path d="M10 18L4 12L10 6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
 
-                {/* ICONS */}
-                <div className={`flex items-center gap-6 z-50 relative transition-colors duration-500 ${iconColorClass}`}>
 
-                    <button
-                        onClick={() => setIsSearchOpen(true)}
-                        className="hover:text-gold-400 transition-colors p-2"
-                    >
-                        <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
-                    </button>
+                {/* --- CENTER LOGO (Sliding Logic) --- */}
+                <div 
+                    className={`absolute top-1/2 transform -translate-y-1/2 transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] z-40
+                        ${isHomePage 
+                            ? 'left-6 md:left-12 translate-x-0' // Home: Align Left
+                            : 'left-1/2 -translate-x-1/2'       // Other: Align Center
+                        }
+                    `}
+                >
+                    <a href="/" className="block hover:opacity-80 transition-opacity">
+                        <img
+                            src="/images/logo.jpg"
+                            alt="CS SINGHI & Associates"
+                            className="h-16 md:h-20 w-auto object-contain" 
+                        />
+                    </a>
+                </div>
 
-                    <button
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="group focus:outline-none p-2"
-                    >
+
+                {/* --- RIGHT AREA: Menu Icon --- */}
+                <div className={`flex items-center h-16 md:h-20 ${iconColorClass}`}>
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="group focus:outline-none p-2">
                         {isMenuOpen ? (
                             <svg width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="text-gold-400">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -147,16 +161,14 @@ export default function Navigation() {
                 </div>
             </header>
 
-            {/* DRAWER BACKGROUND & PANEL */}
+            {/* DRAWER & OVERLAY */}
             <div
-                className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-40 transition-opacity duration-500 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-                    }`}
+                className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-40 transition-opacity duration-500 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
                 onClick={() => setIsMenuOpen(false)}
             />
 
             <aside
-                className={`fixed top-0 right-0 h-full w-full md:w-[450px] bg-obsidian border-l border-white/10 z-40 transform transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}
+                className={`fixed top-0 right-0 h-full w-full md:w-[450px] bg-obsidian border-l border-white/10 z-40 transform transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
             >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-gold-900/20 to-transparent pointer-events-none"></div>
 
@@ -166,14 +178,11 @@ export default function Navigation() {
                             <a
                                 key={item}
                                 href={`/${item.toLowerCase()}`}
-                                className={`group relative inline-block w-max text-3xl md:text-4xl font-serif font-light text-white transition-all duration-300 transform ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
-                                    }`}
+                                className={`group relative inline-block w-max text-3xl md:text-4xl font-serif font-light text-white transition-all duration-300 transform ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
                                 style={{ transitionDelay: `${150 + (index * 50)}ms` }}
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                <span className="group-hover:text-gold-400 transition-colors duration-300">
-                                    {item}
-                                </span>
+                                <span className="group-hover:text-gold-400 transition-colors duration-300">{item}</span>
                                 <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-gold-400 origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"></span>
                             </a>
                         ))}
