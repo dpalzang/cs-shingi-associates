@@ -5,7 +5,7 @@ import SearchOverlay from './SearchOverlay.jsx';
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    
+
     // Scroll & Path states
     const [isScrolled, setIsScrolled] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
@@ -19,7 +19,7 @@ export default function Navigation() {
             const path = window.location.pathname;
             setIsHomePage(path === '/' || path === '');
         };
-        
+
         checkPath();
         document.addEventListener('astro:page-load', checkPath);
         window.addEventListener('popstate', checkPath);
@@ -44,18 +44,18 @@ export default function Navigation() {
                     const style = window.getComputedStyle(entry.target);
                     const bg = style.backgroundColor;
                     if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
-                         const rgb = bg.match(/\d+/g);
-                         if (rgb) {
-                             const brightness = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) / 1000);
-                             setIsDarkBackground(brightness < 128);
-                         }
+                        const rgb = bg.match(/\d+/g);
+                        if (rgb) {
+                            const brightness = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) / 1000);
+                            setIsDarkBackground(brightness < 128);
+                        }
                     }
                 }
             });
         };
 
         const observer = new IntersectionObserver(observerCallback, {
-             root: null, rootMargin: '-5% 0px -95% 0px', threshold: 0
+            root: null, rootMargin: '-5% 0px -95% 0px', threshold: 0
         });
 
         document.querySelectorAll('section, footer').forEach(s => observer.observe(s));
@@ -87,12 +87,12 @@ export default function Navigation() {
 
     const menuItems = ['Projects', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'];
 
-    const iconColorClass = isMenuOpen 
-        ? 'text-gold-200' 
+    const iconColorClass = isMenuOpen
+        ? 'text-gold-200'
         : (isDarkBackground ? 'text-gold-200' : 'text-obsidian');
 
-    const hamburgerLineColor = isMenuOpen 
-        ? 'bg-gold-200' 
+    const hamburgerLineColor = isMenuOpen
+        ? 'bg-gold-200'
         : (isDarkBackground ? 'bg-gold-200' : 'bg-obsidian');
 
     return (
@@ -103,24 +103,24 @@ export default function Navigation() {
                 className={`fixed top-0 left-0 w-full z-50 px-6 md:px-12 flex items-end justify-between bg-transparent 
                     transition-all duration-500 ease-in-out
                     ${/* FIX: Removed '|| isMenuOpen' here so it doesn't shrink when opening menu */
-                      isScrolled ? 'py-4' : 'py-8'}
+                    isScrolled ? 'py-4' : 'py-8'}
                     ${/* Ensure it stays visible if menu is open */
-                      (isVisible || isMenuOpen) ? 'translate-y-0' : '-translate-y-full'}
+                    (isVisible || isMenuOpen) ? 'translate-y-0' : '-translate-y-full'}
                 `}
             >
                 {/* --- LEFT AREA: Holds either Logo (Home) or Back Button (Inner) --- */}
-                <div className="flex items-center h-16 md:h-20 w-24"> 
-                    
+                <div className="flex items-center h-16 md:h-20 w-24">
+
                     {/* BACK BUTTON */}
-                    <div 
+                    <div
                         className={`transition-all duration-500 
-                            ${(!isHomePage && !isMenuOpen) 
-                                ? 'opacity-100 translate-x-0' 
+                            ${(!isHomePage && !isMenuOpen)
+                                ? 'opacity-100 translate-x-0'
                                 : 'opacity-0 -translate-x-4 pointer-events-none'
                             }
                         `}
                     >
-                        <button 
+                        <button
                             onClick={handleBackClick}
                             className={`group flex items-center justify-center p-2 -ml-2 hover:text-[#b88a44] transition-colors ${iconColorClass}`}
                             aria-label="Go Back"
@@ -135,11 +135,11 @@ export default function Navigation() {
 
 
                 {/* --- CENTER LOGO (Sliding Logic) --- */}
-                <div 
+                <div
                     className={`absolute top-1/2 transform -translate-y-1/2 transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] z-40
-                        ${isHomePage 
-                            ? 'left-6 md:left-12 translate-x-0' 
-                            : 'left-1/2 -translate-x-1/2'       
+                        ${isHomePage
+                            ? 'left-6 md:left-12 translate-x-0'
+                            : 'left-1/2 -translate-x-1/2'
                         }
                     `}
                 >
@@ -147,7 +147,7 @@ export default function Navigation() {
                         <img
                             src="/images/logo.jpg"
                             alt="CS SINGHI & Associates"
-                            className="h-16 md:h-20 w-auto object-contain" 
+                            className="h-16 md:h-20 w-auto object-contain"
                         />
                     </a>
                 </div>
@@ -188,7 +188,9 @@ export default function Navigation() {
                             <a
                                 key={item}
                                 href={`/${item.toLowerCase()}`}
-                                className={`group relative inline-block w-max text-3xl md:text-4xl font-serif font-light text-white transition-all duration-300 transform ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
+                                // CHANGE 1: Switched 'font-serif' to 'font-sans'
+                                // CHANGE 2: Added 'tracking-wide' for a cleaner, airier look
+                                className={`group relative inline-block w-max text-3xl md:text-4xl font-sans font-light tracking-wide text-white transition-all duration-300 transform ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
                                 style={{ transitionDelay: `${150 + (index * 50)}ms` }}
                                 onClick={() => setIsMenuOpen(false)}
                             >
