@@ -6,13 +6,8 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
 <section id="anniversary" class="py-32 px-6 bg-[#f9f9f9] overflow-hidden">
   <div class="max-w-7xl mx-auto">
     
-    {/* HEADER SECTION */}
-    {/* Using Flexbox instead of Grid here ensures the vertical text 
-        stays strictly "next to" the headline without overlapping */}
     <div class="flex flex-row items-start gap-6 md:gap-12 mb-24">
       
-      {/* "Since 2001" - VERTICAL LABEL */}
-      {/* writing-mode:vertical-rl reserves real space so it won't overlap */}
       <div class="pt-2 shrink-0">
         <span class="block text-[10px] md:text-xs tracking-[0.3em] uppercase text-amber-700 font-semibold 
           [writing-mode:vertical-rl] rotate-180 whitespace-nowrap">
@@ -20,7 +15,6 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
         </span>
       </div>
 
-      {/* HEADLINE */}
       <div>
         <h2 class="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] text-neutral-900 mb-10">
           A Quarter Century <br/>
@@ -37,7 +31,7 @@ import AnniversaryTimeline from './AnniversaryTimeline.astro';
       <div class="lg:col-span-7 relative group">
         <div class="aspect-[4/5] bg-neutral-200 overflow-hidden shadow-sm">
           <img 
-            src="https://images.unsplash.com/photo-1511818330032-95ca54e7aae0?q=80&w=2070" 
+            src="https://cdn.ca.emap.com/wp-content/uploads/sites/12/1973/02/Img1_660_879659229.jpg" 
             alt="Legacy Architecture" 
             class="w-full h-full object-cover grayscale contrast-125 transition-transform duration-700 group-hover:scale-105"
           />

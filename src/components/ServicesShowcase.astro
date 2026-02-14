@@ -6,7 +6,7 @@ const services = [
     id: "architecture",
     title: "Architectural Design",
     desc: "From concept to council approval. We create structures that balance aesthetic daring with structural integrity.",
-    image: "https://images.unsplash.com/photo-1503387762-592dea58ef23?q=80&w=2070",
+    image: "https://www.globaldisconnect.org/wp-content/uploads/2024/03/3-Cedar-House-an-example-of-Dhajji-Neo-Tudor-hybrid-architecture-in-Shimla-Himachal-Pradesh-scaled.jpeg",
     span: "md:col-span-2 md:row-span-2", // Big feature block
     style: "dark"
   },
@@ -41,7 +41,6 @@ const services = [
   <div class="max-w-7xl mx-auto">
     
     {/* HEADER */}
-    {/* Left-aligned on mobile to match previous section */}
     <div class="mb-16 flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-300 pb-8 gap-6">
       <div class="text-left">
         <span class="text-xs font-bold tracking-[0.3em] uppercase text-amber-700 block mb-4">
@@ -52,7 +51,6 @@ const services = [
         </h2>
       </div>
       
-      {/* Description text - Left on mobile, Right on Desktop */}
       <p class="text-neutral-500 max-w-md text-sm leading-relaxed text-left md:text-right">
         Beyond listings, we offer a multidisciplinary approach merging architecture, engineering, and strategic land development.
       </p>
@@ -62,7 +60,11 @@ const services = [
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[300px]">
       
       {services.map((service) => (
-        <div class={`relative group overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl ${service.span}`}>
+        /* CHANGED: Div to Anchor (<a>), added href, added 'block' class to ensure layout holds */
+        <a 
+          href={`/services/${service.id}`}
+          class={`relative group block overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl ${service.span}`}
+        >
           
           {/* Background Image (If exists) */}
           {service.image && (
@@ -104,7 +106,7 @@ const services = [
               <span class="text-white text-xl">↗</span>
             </div>
           </div>
-        </div>
+        </a>
       ))}
 
     </div>

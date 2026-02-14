@@ -1,0 +1,82 @@
+---
+// src/pages/404.astro
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Coming Soon | CS Singhi & Associates" description="We are currently crafting this space.">
+  <section class="relative h-[80vh] flex flex-col items-center justify-center px-6 overflow-hidden">
+    
+    {/* 1. Subtle Background Glow */}
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-[#b88a44]/10 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="relative z-10 text-center max-w-3xl mx-auto">
+        {/* 2. Overline */}
+        <span class="text-[#b88a44] font-sans font-bold tracking-[0.3em] uppercase text-[10px] md:text-xs mb-6 block animate-fade-in">
+            Work in Progress
+        </span>
+        
+        {/* 3. Main Title */}
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif font-light text-white mb-8 leading-[0.9] tracking-tighter animate-fade-in delay-100">
+            Crafting <br className="md:hidden" />
+            <span class="italic text-neutral-600 font-serif">Excellence</span>
+        </h1>
+
+        {/* 4. Description */}
+        <p class="text-neutral-400 font-sans font-light text-sm md:text-lg leading-relaxed mb-12 max-w-lg mx-auto animate-fade-in delay-200">
+            We are building this space with the same attention to detail we bring to our architecture. This page will be available soon.
+        </p>
+
+        {/* 5. Button */}
+        <a 
+            href="/" 
+            class="group relative inline-flex items-center gap-4 px-8 py-4 bg-transparent border border-white/10 rounded-full overflow-hidden hover:border-[#b88a44]/50 transition-all duration-500 animate-fade-in delay-300"
+        >
+            <span class="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></span>
+            <span class="relative font-sans text-xs font-bold tracking-[0.2em] uppercase text-white group-hover:text-[#b88a44] transition-colors">
+                Return Home
+            </span>
+             <svg 
+                width="20" 
+                height="20" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                stroke-width="1.5" 
+                class="relative w-4 h-4 text-neutral-500 group-hover:text-[#b88a44] transition-colors duration-300 group-hover:translate-x-1"
+            >
+                <path d="M5 12h14" />
+                <path d="M12 5l7 7-7 7" />
+            </svg>
+        </a>
+    </div>
+
+    {/* 6. Decorative Architectural Lines (Optional) */}
+    <div class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+    <div class="absolute top-0 right-12 w-[1px] h-32 bg-gradient-to-b from-white/10 to-transparent hidden md:block"></div>
+    <div class="absolute bottom-0 left-12 w-[1px] h-32 bg-gradient-to-t from-white/10 to-transparent hidden md:block"></div>
+
+  </section>
+</Layout>
+
+<style>
+    /* Smooth Fade In Animation */
+    .animate-fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    /* Staggered Delays */
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

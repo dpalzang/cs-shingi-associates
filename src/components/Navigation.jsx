@@ -85,7 +85,7 @@ export default function Navigation() {
         }
     };
 
-    const menuItems = ['Projects', 'Purpose', 'Insights', 'People', 'Studios', 'News', 'Careers'];
+    const menuItems = ['Projects', 'Purpose', 'Insights', 'People', 'Studios'];
 
     const iconColorClass = isMenuOpen
         ? 'text-gold-200'
